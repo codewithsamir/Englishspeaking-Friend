@@ -1,9 +1,9 @@
-import AuthPage from '@/components/Authpage'
+import Dashboard from '@/components/Dashboard'
 import React from 'react'
 
 const page = () => {
   return (
-    <AuthPage/>
+    <Dashboard />
   )
 }
 

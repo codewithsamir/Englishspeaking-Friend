@@ -1,9 +1,9 @@
-import AuthPage from '@/components/Authpage'
+import Feedback from '@/components/Feedback'
 import React from 'react'
 
 const page = () => {
   return (
-    <AuthPage/>
+   <Feedback name ={"name"} />
   )
 }
 
