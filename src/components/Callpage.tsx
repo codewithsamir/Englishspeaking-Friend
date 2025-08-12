@@ -129,7 +129,7 @@ const handleCall = async ()=>{
    
 
  
-}
+}}
 
 const handleDisconnect = async ()=>{
   setcallStatus(CallStatus.FINISHED);

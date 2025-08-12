@@ -3,13 +3,14 @@ import { Suspense } from 'react';
 
 
 
-const page = ({params}:RouteParams) => {
+const page = async ({params}:RouteParams) => {
     const started = "user";
+    const {userid} = await params;
 
     return (
 
         <Suspense fallback={<h1>Loading......</h1>} >
-<CallPage speaker={started} />
+<CallPage speaker={started} userId={userid} userName='' type={} />
 
         </Suspense>
 
