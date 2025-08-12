@@ -8,10 +8,10 @@ import { feedbackSchema } from "@/constant";
 // Create feedback for user’s introduction speech
 export async function createFeedback(params: {
   userId: string;
-  interviewId: string; // one conversation/interview id
+ 
   introductionText: string; // The single user introduction as plain text
 }) {
-  const { userId, interviewId, introductionText } = params;
+  const { userId, introductionText } = params;
 
   try {
     // Prepare prompt for Gemini AI

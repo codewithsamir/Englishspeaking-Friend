@@ -1,18 +1,146 @@
 "use client"
 import { FaRobot, FaUser } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { vapi } from "@/action/vapi.sdk";
+import { createFeedback } from "@/action/general.action";
+import { cn } from "@/lib/utils";
 
 type CallPageProps = {
-  speaker: "ai" | "user";
+  speaker: "ai" | "user" ;
+  type:"generate"
+  userId:string
+  userName:string
 };
 
-export default function CallPage({ speaker }: CallPageProps) {
+
+enum CallStatus {
+    INACTIVE = 'INACTIVE',
+    CONNECTING = 'CONNECTING',
+    ACTIVE = 'ACTIVE',
+    FINISHED = 'FINISHED'
+}
+
+interface SavedMessage {
+  role: 'user' | 'system' | 'assistant';
+  content: string;
+
+}
+
+export default function CallPage({ speaker,type,userId,userName }: CallPageProps) {
   const router = useRouter();
 
-  const handleEndCall = () => {
-    // Add your call-ending logic here
-    router.push("/dashboard"); // Redirect after ending
-  };
+   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [callStatus, setcallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
+const [messages, setmessages] = useState<SavedMessage[]>([]);
+
+
+useEffect(()=>{
+  const onCallStart = ()=> setcallStatus(CallStatus.ACTIVE);
+  const onCallEnd = ()=>setcallStatus(CallStatus.FINISHED);
+
+  const  onMessage = (message: Message)=>{
+    if(message.type === 'transcript' && message.transcriptType === 'final'){
+const newMessage = {
+  role: message.role , content : message.transcript
+}
+console.log(newMessage)
+setmessages((prev)=>[...prev,newMessage])
+    }
+  }
+
+  const onSpeechStart = ()=>setIsSpeaking(true);
+  const onSpeechEnd = ()=>setIsSpeaking(false);
+
+  const onError = (error : Error)=>console.log("error", error)
+
+  vapi.on('call-start', onCallStart)
+  vapi.on('call-end', onCallEnd)
+  vapi.on('message', onMessage)
+  vapi.on('call-start', onCallStart)
+  vapi.on('speech-start', onSpeechStart)
+  vapi.on('speech-end', onSpeechEnd)
+  vapi.on('error',onError)
+
+  return ()=>{
+    vapi.off('call-start', onCallStart)
+    vapi.off('call-end', onCallEnd)
+    vapi.off('message', onMessage)
+    vapi.off('call-start', onCallStart)
+    vapi.off('speech-start', onSpeechStart)
+    vapi.off('speech-end', onSpeechEnd)
+    vapi.off('error',onError)
+  }
+},[])
+
+const handleGenerateFeedback = async(messages:SavedMessage[])=>{
+  console.log('generate feedback here.');
+
+
+  //Todo: create a server action that generates feedback
+  // const {success, feedbackId: id} = await createFeedback({
+  //   userId:userId!,
+  //   introductionText:messages
+  // })
+  // if(success && id){
+  //   router.push(`/interview/${userId}/feedback`)
+  // }else{
+  //   console.log('error saving feedback')
+  //   router.push('/')
+  // }
+}
+
+useEffect(()=>{
+  if(callStatus === CallStatus.FINISHED){
+    if(type === 'generate'){
+      router.push("/")
+    }else{
+      handleGenerateFeedback(messages);
+    }
+  }
+if(callStatus === CallStatus.FINISHED) router.push('/');
+
+},
+[messages,callStatus,type,userId])
+
+
+const handleCall = async ()=>{
+  setcallStatus(CallStatus.CONNECTING);
+
+  if(type === 'generate'){
+
+ await vapi.start(
+  undefined,
+  undefined,
+  undefined,
+  process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+    
+   
+    variableValues:{
+      username:userName,
+      userid:userId,
+      
+    }
+  })
+
+  }else{
+    let formatedquestions = '';
+
+   
+
+ 
+}
+
+const handleDisconnect = async ()=>{
+  setcallStatus(CallStatus.FINISHED);
+
+  vapi.stop();
+}
+
+
+    const lastestmessage = messages[messages.length - 1] ?.content;
+
+    const isCallInactiveOrFinished = callStatus === CallStatus.INACTIVE || callStatus === CallStatus.FINISHED;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center px-6">
@@ -72,12 +200,28 @@ export default function CallPage({ speaker }: CallPageProps) {
       </div>
 
       {/* End Call Button */}
-      <button
-        onClick={handleEndCall}
-        className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-lg shadow-md"
-      >
-        End Call
-      </button>
+    <div className="w-full flex justify-center">
+    {callStatus !== 'ACTIVE' ?
+     (
+        <button className='relative btn-call' 
+        onClick={handleCall}
+        >
+            <span className={cn('absolute animate-ping rounded-full opacity-75', callStatus !== 'CONNECTING' && 'hidden')}/>
+               
+               <span>
+               {isCallInactiveOrFinished ? 'call' : "....."}
+               </span>
+            
+        </button>
+     )
+      :
+      (
+        <button className='btn-disconnect' 
+        onClick={handleDisconnect}
+        >End</button>
+      )
+      }
+  </div>
     </div>
   );
 }
