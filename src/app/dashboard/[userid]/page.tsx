@@ -1,10 +1,12 @@
+import { getCurrentsUser } from "@/action/auth.action";
 import CallPage from "@/components/Callpage";
 
 const page = async ({ params }: any) => {
   const { userid } =await params;
-  const userName = "samir"; // fill with actual username if you have it
+  const user = await getCurrentsUser()
+  const {name,id}:any =  user;
 
-  return <CallPage userId={userid} userName={userName} type="generate" />;
+  return <CallPage userId={id} userName={name} type="generate" />;
 };
 
 export default page;

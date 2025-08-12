@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { vapi } from "@/action/vapi.sdk";
 
 import { cn } from "@/lib/utils";
+import { createFeedback } from "@/action/general.action";
 
 type CallPageProps = {
   type: "generate";
@@ -71,16 +72,16 @@ export default function CallPage({ type, userId, userName }: CallPageProps) {
     console.log("generate feedback here.");
 
     // TODO: Uncomment and implement server action to generate feedback
-    // const { success, feedbackId: id } = await createFeedback({
-    //   userId: userId!,
-    //   introductionText: messages,
-    // });
-    // if (success && id) {
-    //   router.push(`/interview/${userId}/feedback`);
-    // } else {
-    //   console.log("error saving feedback");
-    //   router.push("/");
-    // }
+    const { success, feedbackId: id } = await createFeedback({
+      userId: userId!,
+      introductionText: messages,
+    });
+    if (success && id) {
+      router.push(`/dashboard/${userId}/feedback`);
+    } else {
+      console.log("error saving feedback");
+      router.push("/dashboard");
+    }
   };
 
   useEffect(() => {
@@ -120,6 +121,11 @@ console.log("hello")
     vapi.stop();
   };
 
+
+   const lastestmessage = messages[messages.length - 1] ?.content;
+
+  
+
   const isCallInactiveOrFinished =
     callStatus === CallStatus.INACTIVE || callStatus === CallStatus.FINISHED;
 
@@ -153,12 +159,21 @@ console.log("hello")
               <FaUser />
             </div>
           </div>
-          <p className="mt-6 text-white text-lg font-semibold">You</p>
+          <p className="mt-6 text-white text-lg font-semibold">{userName}</p>
           <p className="mt-2 text-sm text-secondary animate-bounce">
             {callStatus === CallStatus.ACTIVE && !isSpeaking ? "Speaking..." : ""}
           </p>
         </div>
       </div>
+      {messages.length > 0 && (
+    <div className="transcript-border">
+      <div className="transcript">
+        <p key={lastestmessage} className={cn("transition-opacity duration-500 opacity-0", 'animate-fadeIn opacity-100 textwhite')}>
+          {lastestmessage}
+        </p>
+      </div>
+    </div>
+  )}
 
       {/* Call Button */}
       <div className="w-full flex justify-center">

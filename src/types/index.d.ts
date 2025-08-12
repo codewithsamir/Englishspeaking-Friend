@@ -130,4 +130,23 @@ interface Feedback {
   finalAssessment: string;
   createdAt: string;
 }
+interface GetFeedbackByInterviewIdParams {
+  
+  userId: string;
+}
 
+
+interface Feedback {
+  id: string;
+  userId: string;
+  totalScore: number;
+  categoryScores: Array<{
+    name: string;
+    score: number;
+    comment: string;
+  }>;
+  strengths: string[];
+  areasForImprovement: string[];
+  finalAssessment: string;
+  createdAt: string;
+}

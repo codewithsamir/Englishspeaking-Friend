@@ -9,11 +9,14 @@ import { feedbackSchema } from "@/constant";
 export async function createFeedback(params: {
   userId: string;
  
-  introductionText: string; // The single user introduction as plain text
+  introductionText:[]; // The single user introduction as plain text
 }) {
   const { userId, introductionText } = params;
 
   try {
+    const formattedTranscript = introductionText.map((sentence: {role:string, content:string})=>(
+        `-${sentence.role} : ${sentence.content} \n`
+    )).join('');
     // Prepare prompt for Gemini AI
     const prompt = `
 You are an English tutor evaluating a student's self-introduction to improve their speaking skills.  
@@ -25,15 +28,14 @@ Score from 0 to 100 in these areas only:
 - Fluency & Confidence  
 
 Introduction text:  
-${introductionText}
+${formattedTranscript}
 `;
 
     const {
-      object: { totalScore, categoryScores, strengths, areasForImprovement, finalAssessment },
+      object: { totalScore, categoryScores, strengths, areasForImprovement, finalAssessment }
     } = await generateObject({
-        model:google('gemini-2.0-flash-001',{
-            structuredOutputs:false,
-        }),
+        model:google('gemini-2.0-flash-001'),
+        
       schema: feedbackSchema,
       prompt,
       system: "You are a helpful English tutor giving constructive feedback on a student's introduction.",
@@ -41,7 +43,7 @@ ${introductionText}
 
     // Save feedback to Firebase linked with user & interview
     const feedbackDoc = await db.collection("feedback").add({
-      interviewId,
+      
       userId,
       totalScore,
       categoryScores,
@@ -83,4 +85,27 @@ export async function getFeedbackByInterviewId(params: {
     id: feedbackDoc.id,
     ...feedbackDoc.data(),
   } as Feedback;
+}
+
+
+export async function getFeebbackByUserId(params:GetFeedbackByInterviewIdParams): Promise<Feedback | null>{
+
+    const {userId} = params;
+    const feedback = await db
+    .collection('feedback')
+ 
+    .where('userId', '==', userId)
+    .limit(1)
+    .get()
+
+if(feedback.empty) return null;
+
+const feedbackDoc = feedback.docs[0];
+
+
+
+    return {
+        id:feedbackDoc.id,
+        ...feedbackDoc.data()
+    } as Feedback;
 }

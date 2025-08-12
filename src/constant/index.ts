@@ -1,36 +1,27 @@
-export const feedbackSchema = {
-  totalScore: {
-    type: "number",
-    description: "Overall score from 0 to 100",
-  },
-  categoryScores: {
-    type: "object",
-    properties: {
-      pronunciationAndClarity: {
-        type: "number",
-        description: "Score for pronunciation and clarity (0-100)",
-      },
-      grammarAndVocabulary: {
-        type: "number",
-        description: "Score for grammar and vocabulary (0-100)",
-      },
-      fluencyAndConfidence: {
-        type: "number",
-        description: "Score for fluency and confidence (0-100)",
-      },
-    },
-    required: ["pronunciationAndClarity", "grammarAndVocabulary", "fluencyAndConfidence"],
-  },
-  strengths: {
-    type: "string",
-    description: "Strengths of the candidate",
-  },
-  areasForImprovement: {
-    type: "string",
-    description: "Areas where the candidate can improve",
-  },
-  finalAssessment: {
-    type: "string",
-    description: "Final overall assessment of the candidate",
-  },
-};
+import { z } from "zod";
+
+export const feedbackSchema = z.object({
+  totalScore: z.number().min(0).max(100).describe("Overall score from 0 to 100"),
+  
+  categoryScores: z.object({
+    pronunciationAndClarity: z
+      .number()
+      .min(0)
+      .max(100)
+      .describe("Score for pronunciation and clarity (0-100)"),
+    grammarAndVocabulary: z
+      .number()
+      .min(0)
+      .max(100)
+      .describe("Score for grammar and vocabulary (0-100)"),
+    fluencyAndConfidence: z
+      .number()
+      .min(0)
+      .max(100)
+      .describe("Score for fluency and confidence (0-100)"),
+  }),
+  
+  strengths: z.string().describe("Strengths of the candidate"),
+  areasForImprovement: z.string().describe("Areas where the candidate can improve"),
+  finalAssessment: z.string().describe("Final overall assessment of the candidate"),
+});
