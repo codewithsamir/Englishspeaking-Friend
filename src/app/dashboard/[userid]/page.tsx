@@ -1,21 +1,10 @@
-import CallPage from '@/components/Callpage'
-import { Suspense } from 'react';
+import CallPage from "@/components/Callpage";
 
+const page = async ({ params }: any) => {
+  const { userid } =await params;
+  const userName = "samir"; // fill with actual username if you have it
 
+  return <CallPage userId={userid} userName={userName} type="generate" />;
+};
 
-const page = async ({params}:RouteParams) => {
-    const started = "user";
-    const {userid} = await params;
-
-    return (
-
-        <Suspense fallback={<h1>Loading......</h1>} >
-<CallPage speaker={started} userId={userid} userName='' type={} />
-
-        </Suspense>
-
-
-    )
-}
-
-export default page
+export default page;

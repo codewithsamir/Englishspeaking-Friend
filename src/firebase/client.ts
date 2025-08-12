@@ -1,16 +1,16 @@
 import { initializeApp,getApp,getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB3dT4YAHfkF-JXVkkVsVnkoVTTH4vNEeg",
-  authDomain: "aiinterview-fdd2c.firebaseapp.com",
-  projectId: "aiinterview-fdd2c",
-  storageBucket: "aiinterview-fdd2c.firebasestorage.app",
-  messagingSenderId: "1036490077402",
-  appId: "1:1036490077402:web:7a2e42851902626e86e1e3",
-  measurementId: "G-5YKXTDG0VC"
+  apiKey: "AIzaSyBIESNTveu9LXNEFmqOqPUalbNfFuUDnIA",
+  authDomain: "english-speaking-friend.firebaseapp.com",
+  projectId: "english-speaking-friend",
+  storageBucket: "english-speaking-friend.firebasestorage.app",
+  messagingSenderId: "586741332889",
+  appId: "1:586741332889:web:8373691dc869de57bc7108",
+  measurementId: "G-85Z2V9S8SD"
 };
 
 // Initialize Firebase
@@ -20,3 +20,5 @@ const app = !getApps.length ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 
 export const db = getFirestore(app);
+
+export const googleprovider =new GoogleAuthProvider()
