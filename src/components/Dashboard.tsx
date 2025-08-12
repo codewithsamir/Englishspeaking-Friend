@@ -76,7 +76,7 @@ export default function Dashboard({ user,trialmode }: DashboardProps) {
                 {name}
               </CardTitle>
             </div>
-{trialmode ?
+{!trialmode ?
  ( <Button
               onClick={startSession}
               className="w-full rounded-2xl
