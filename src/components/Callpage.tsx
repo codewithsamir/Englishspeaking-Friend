@@ -83,6 +83,7 @@ export default function CallPage({ type, userId, userName }: CallPageProps) {
       router.push("/dashboard");
     }
   };
+ 
 
   useEffect(() => {
     if (callStatus === CallStatus.FINISHED) {
@@ -135,7 +136,7 @@ console.log("hello")
       <div className="flex flex-col md:flex-row gap-10 mb-10">
         {/* AI Card */}
         <div
-          className={`p-6 rounded-2xl shadow-lg w-64 h-80 flex flex-col items-center justify-center transition-all duration-300 bg-primary/30 ring-4 ring-primary scale-105 animate-pulse`}
+          className={`p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 bg-primary/30 ring-4 ring-primary scale-105 animate-pulse`}
         >
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary opacity-50 blur-xl animate-ping"></div>
@@ -151,11 +152,12 @@ console.log("hello")
 
         {/* User Card */}
         <div
-          className={`p-6 rounded-2xl shadow-lg w-64 h-80 flex flex-col items-center justify-center transition-all duration-300 bg-secondary/30 ring-4 ring-secondary scale-105 animate-pulse`}
+          className={`p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 bg-secondary/30 ring-4 ring-secondary scale-105 animate-pulse`}
         >
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-secondary opacity-50 blur-xl animate-ping"></div>
-            <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-secondary">
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-primary">
+
               <FaUser />
             </div>
           </div>

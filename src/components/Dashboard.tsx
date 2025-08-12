@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { FaRobot, FaUser } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { FeedbackCard } from "./Feedbackcard";
 
 interface DashboardProps {
   user: {
     name: string;
     email: string;
     id: string;
-  };
-  trialmode:boolean
+  } ;
+  trialmode:boolean;
+  feedback:Feedback
 }
 
-export default function Dashboard({ user,trialmode }: DashboardProps) {
+export default function Dashboard({ user,trialmode,feedback }: DashboardProps) {
   const router = useRouter();
   const { name, id } = user;
 
@@ -31,16 +33,16 @@ export default function Dashboard({ user,trialmode }: DashboardProps) {
         </span>
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-6xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-4xl w-full">
         {/* AI Partner Card */}
         <Card
           className="relative rounded-3xl bg-gray-800 border-2 border-cyan-500
             shadow-[0_0_20px_rgba(0,255,255,0.5)] hover:shadow-[0_0_40px_rgba(0,255,255,0.8)]
             transition-shadow duration-300 transform hover:-translate-y-1 hover:scale-[1.04]"
         >
-          <CardContent className="flex flex-col items-center text-center space-y-10 p-14">
+          <CardContent className="flex flex-col items-center text-center space-y-10 p-10">
             <div
-              className="w-28 h-28 rounded-full
+              className="w-24 h-24 rounded-full
                 bg-gradient-to-tr from-cyan-500 to-blue-600
                 flex items-center justify-center text-white text-6xl
                 shadow-lg shadow-cyan-400/70"
@@ -62,7 +64,7 @@ export default function Dashboard({ user,trialmode }: DashboardProps) {
             shadow-[0_0_20px_rgba(255,0,128,0.5)] hover:shadow-[0_0_40px_rgba(255,0,128,0.8)]
             transition-shadow duration-300 transform hover:-translate-y-1 hover:scale-[1.04]"
         >
-          <CardContent className="p-14 space-y-10">
+          <CardContent className="p-10 space-y-10">
             <div className="flex items-center gap-8">
               <div
                 className="w-20 h-20 rounded-full
@@ -92,14 +94,17 @@ export default function Dashboard({ user,trialmode }: DashboardProps) {
             </Button>)
  :(
   <h2 className="text-center text-red-600 bg-red-100 border border-red-300 rounded-md p-4 max-w-md mx-auto shadow-sm font-semibold">
-  You have already used it.
+  You’ve reached the usage limit. To access more, please consider purchasing a subscription.You have already used it.
 </h2>
 
  )}
            
           </CardContent>
         </Card>
+          <div className="w-full mx-auto p-4">
+    </div>
       </div>
+      <FeedbackCard feedback={feedback} />
     </div>
   );
 }
