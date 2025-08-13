@@ -5,19 +5,18 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 const Page = async () => {
-  // Fetch current user
-  const user = await getCurrentsUser();
-
-  // console.log(user)
-  const isUserAvailable = !!(user && Object.keys(user).length > 0);
-
-  if(!isUserAvailable)   redirect("/")
   
-  // Extract userId safely
-  const {id:userId}:any= user ;
 
-  // Fetch feedback for this user
-  const feedback = await getFeebbackByUserId({ userId });
+  const [user, feedback] = await Promise.all([
+  getCurrentsUser(),
+  (async () => {
+    const user:any = await getCurrentsUser();
+    return getFeebbackByUserId({ userId: user.id });
+  })(),
+]);
+
+  const {id:userId}:any= user ;
+ 
 
   // Check if feedback exists and is non-empty
   const isFeedbackAvailable = !!(feedback && Object.keys(feedback).length > 0);
