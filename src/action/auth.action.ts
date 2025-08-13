@@ -98,6 +98,8 @@ try {
 
 export async function isAuthenticated(){
     const user = await getCurrentsUser();
+
+    
 // console.log(user)
     return !!user;
 }
