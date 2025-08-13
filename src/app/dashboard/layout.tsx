@@ -13,10 +13,10 @@ const Rootlayout =async ({children}:{children:ReactNode}) => {
 
   if(!isUserAuthenticated)  redirect("/")
   return (
-    <div className="root-layout">
+    <>
       <Header/>
       {children}
-    </div>
+    </>
   )
 }
 
