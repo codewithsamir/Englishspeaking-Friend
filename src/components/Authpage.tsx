@@ -24,6 +24,7 @@ export default function AuthPage() {
         name: user.displayName ?? "",
         email: user.email ?? "",
       });
+      console.log(response)
 
       if (!response.success) {
         toast.error(response.message);
