@@ -150,3 +150,22 @@ interface Feedback {
   finalAssessment: string;
   createdAt: string;
 }
+
+
+type CallPageProps = {
+  type: "generate";
+  userId: string;
+  userName: string;
+};
+
+enum CallStatus {
+  INACTIVE = "INACTIVE",
+  CONNECTING = "CONNECTING",
+  ACTIVE = "ACTIVE",
+  FINISHED = "FINISHED",
+}
+
+interface SavedMessage {
+  role: "user" | "system" | "assistant";
+  content: string;
+}

@@ -9,7 +9,7 @@ import { feedbackSchema } from "@/constant";
 export async function createFeedback(params: {
   userId: string;
  
-  introductionText:[]; // The single user introduction as plain text
+  introductionText:SavedMessage[];// The single user introduction as plain text
 }) {
   const { userId, introductionText } = params;
 

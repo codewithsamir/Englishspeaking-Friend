@@ -7,23 +7,7 @@ import { vapi } from "@/action/vapi.sdk";
 import { cn } from "@/lib/utils";
 import { createFeedback } from "@/action/general.action";
 
-type CallPageProps = {
-  type: "generate";
-  userId: string;
-  userName: string;
-};
 
-enum CallStatus {
-  INACTIVE = "INACTIVE",
-  CONNECTING = "CONNECTING",
-  ACTIVE = "ACTIVE",
-  FINISHED = "FINISHED",
-}
-
-interface SavedMessage {
-  role: "user" | "system" | "assistant";
-  content: string;
-}
 
 export default function CallPage({ type, userId, userName }: CallPageProps) {
   const router = useRouter();
