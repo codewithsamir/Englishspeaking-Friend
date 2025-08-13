@@ -123,71 +123,106 @@ console.log("hello")
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex flex-col items-center justify-center px-6">
       {/* Cards Row */}
       <div className="flex flex-col md:flex-row gap-10 mb-10">
-        {/* AI Card */}
-        <div
-          className={`p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 bg-primary/30 ring-4 ring-primary scale-105 animate-pulse`}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-primary opacity-50 blur-xl animate-ping"></div>
-            <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-primary">
-              <FaRobot />
-            </div>
-          </div>
-          <p className="mt-6 text-white text-lg font-semibold">AI</p>
-          <p className="mt-2 text-sm text-primary animate-bounce">
-            {callStatus === CallStatus.ACTIVE && isSpeaking ? "Speaking..." : ""}
-          </p>
-        </div>
-
-        {/* User Card */}
-        <div
-          className={`p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 bg-secondary/30 ring-4 ring-secondary scale-105 animate-pulse`}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-secondary opacity-50 blur-xl animate-ping"></div>
-                        <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-primary">
-
-              <FaUser />
-            </div>
-          </div>
-          <p className="mt-6 text-white text-lg font-semibold">{userName}</p>
-          <p className="mt-2 text-sm text-secondary animate-bounce">
-            {callStatus === CallStatus.ACTIVE && !isSpeaking ? "Speaking..." : ""}
-          </p>
-        </div>
-      </div>
-      {messages.length > 0 && (
-    <div className="transcript-border">
-      <div className="transcript">
-        <p key={lastestmessage} className={cn("transition-opacity duration-500 opacity-0", 'animate-fadeIn opacity-100 textwhite')}>
-          {lastestmessage}
-        </p>
+  {/* AI Card */}
+  <div
+    className={cn(
+      "p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 scale-105",
+      callStatus === CallStatus.ACTIVE && isSpeaking
+        ? "bg-purple-600 ring-8 ring-purple-400 animate-pulse" // AI speaking highlight
+        : "bg-primary/30 ring-4 ring-primary" // default
+    )}
+  >
+    <div className="relative">
+      <div
+        className={cn(
+          "absolute inset-0 rounded-full opacity-50 blur-xl",
+          callStatus === CallStatus.ACTIVE && isSpeaking
+            ? "bg-purple-400 animate-ping"
+            : "bg-primary"
+        )}
+      ></div>
+      <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-purple-600">
+        <FaRobot />
       </div>
     </div>
-  )}
+    <p className="mt-6 text-white text-lg font-semibold">AI</p>
+    <p className="mt-2 text-sm text-white animate-bounce">
+      {callStatus === CallStatus.ACTIVE && isSpeaking ? "Speaking..." : ""}
+    </p>
+  </div>
+
+  {/* User Card */}
+  <div
+    className={cn(
+      "p-6 rounded-2xl shadow-lg w-64 h-64 flex flex-col items-center justify-center transition-all duration-300 scale-105",
+      callStatus === CallStatus.ACTIVE && !isSpeaking
+        ? "bg-blue-600 ring-8 ring-blue-400 animate-pulse" // User speaking highlight
+        : "bg-secondary/30 ring-4 ring-secondary" // default
+    )}
+  >
+    <div className="relative">
+      <div
+        className={cn(
+          "absolute inset-0 rounded-full opacity-50 blur-xl",
+          callStatus === CallStatus.ACTIVE && !isSpeaking
+            ? "bg-blue-400 animate-ping"
+            : "bg-secondary"
+        )}
+      ></div>
+      <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl shadow-lg bg-blue-600">
+        <FaUser />
+      </div>
+    </div>
+    <p className="mt-6 text-white text-lg font-semibold">{userName}</p>
+    <p className="mt-2 text-sm text-white animate-bounce">
+      {callStatus === CallStatus.ACTIVE && !isSpeaking ? "Speaking..." : ""}
+    </p>
+  </div>
+</div>
+
+   {/* Transcript */}
+{messages.length > 0 && (
+  <div className="w-full max-w-md p-4 bg-gray-800 rounded-xl border border-gray-700 mt-6 overflow-y-auto h-40">
+    {messages.map((msg, index) => (
+      <p
+        key={index}
+        className={cn(
+          "text-white p-2 rounded-lg mb-2 transition-all duration-500",
+          msg.role === "user" ? "bg-blue-600 self-end text-right" : "bg-purple-600 self-start text-left"
+        )}
+      >
+        {msg.content}
+      </p>
+    ))}
+  </div>
+)}
+
 
       {/* Call Button */}
-      <div className="w-full flex justify-center">
-        {isCallInactiveOrFinished ? (
-          <button
-            className="relative btn-call p-2 bg-green-500 "
-            onClick={handleCall}
-            disabled={callStatus === CallStatus.CONNECTING}
-          >
-            <span
-              className={cn(
-                "absolute animate-ping rounded-full opacity-75",
-                callStatus !== CallStatus.CONNECTING && "hidden"
-              )}
-            />
-            <span>{isCallInactiveOrFinished ? "Call" : "....."}</span>
-          </button>
-        ) : (
-          <button className="btn-disconnect p-2 bg-red-500" onClick={handleDisconnect}>
-            End
-          </button>
-        )}
-      </div>
+      <div className="w-full flex justify-center mt-6">
+  {isCallInactiveOrFinished ? (
+    <button
+      className={cn(
+        "relative px-6 py-3 rounded-full text-white font-bold uppercase tracking-wide shadow-lg transform transition-all duration-300",
+        callStatus === CallStatus.CONNECTING
+          ? "bg-green-500 animate-pulse cursor-not-allowed"
+          : "bg-gradient-to-r from-green-400 to-green-600 hover:scale-105 hover:shadow-2xl"
+      )}
+      onClick={handleCall}
+      disabled={callStatus === CallStatus.CONNECTING}
+    >
+      {callStatus === CallStatus.CONNECTING ? "Connecting..." : "Start Call"}
+    </button>
+  ) : (
+    <button
+      className="px-6 py-3 rounded-full text-white font-bold uppercase tracking-wide bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 hover:shadow-2xl transition-all duration-300"
+      onClick={handleDisconnect}
+    >
+      End Call
+    </button>
+  )}
+</div>
+
     </div>
   );
 }
