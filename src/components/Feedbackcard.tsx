@@ -3,26 +3,11 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
-interface FeedbackSummary {
-  id: string;
-  userId:string;
-  totalScore: number;
-  categoryScores: {
-    pronunciationAndClarity: number;
-    grammarAndVocabulary: number;
-    fluencyAndConfidence: number;
-  };
-  strengths: string;
-  createdAt: string;
-}
 
-interface FeedbackCardProps {
-  feedback: FeedbackSummary;
-}
 
 export function FeedbackCard({ feedback }: FeedbackCardProps) {
   const router = useRouter();
-  const { id, totalScore, categoryScores, strengths, createdAt,userId } = feedback;
+  const {  totalScore, categoryScores, strengths, createdAt,userId } = feedback;
 
   // Short snippet for strengths (max 100 chars)
   const strengthsSnippet =

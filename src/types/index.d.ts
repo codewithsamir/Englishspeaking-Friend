@@ -135,20 +135,15 @@ interface GetFeedbackByInterviewIdParams {
   userId: string | undefined;
 }
 
+interface emptyFeedback {
 
-interface Feedback {
-  id: string;
-  userId: string;
-  totalScore: number;
-  categoryScores: Array<{
-    name: string;
-    score: number;
-    comment: string;
-  }>;
-  strengths: string[];
-  areasForImprovement: string[];
-  finalAssessment: string;
-  createdAt: string;
+  id: string,
+  userId:string,
+  totalScore: number,
+  categoryScores: Array<{name:string,score:number,comment:string}>,
+  strengths: Array<string>,
+  createdAt: string,
+ 
 }
 
 
@@ -168,4 +163,22 @@ enum CallStatus {
 interface SavedMessage {
   role: "user" | "system" | "assistant";
   content: string;
+}
+
+
+interface FeedbackSummary {
+  id: string;
+  userId:string;
+  totalScore: number;
+  categoryScores: {
+    pronunciationAndClarity: number;
+    grammarAndVocabulary: number;
+    fluencyAndConfidence: number;
+  };
+  strengths: string;
+  createdAt: string;
+}
+
+interface FeedbackCardProps {
+  feedback: FeedbackSummary;
 }

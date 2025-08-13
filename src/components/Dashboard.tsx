@@ -104,7 +104,9 @@ export default function Dashboard({ user,trialmode,feedback }: DashboardProps) {
           <div className="w-full mx-auto p-4">
     </div>
       </div>
+      {feedback && Object.keys(feedback).length > 0 && 
       <FeedbackCard feedback={feedback} />
+}
     </div>
   );
 }
