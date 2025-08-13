@@ -7,7 +7,12 @@ import { vapi } from "@/action/vapi.sdk";
 import { cn } from "@/lib/utils";
 import { createFeedback } from "@/action/general.action";
 
-
+enum CallStatus {
+  INACTIVE = "INACTIVE",
+  CONNECTING = "CONNECTING",
+  ACTIVE = "ACTIVE",
+  FINISHED = "FINISHED",
+}
 
 export default function CallPage({ type, userId, userName }: CallPageProps) {
   const router = useRouter();

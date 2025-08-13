@@ -63,29 +63,7 @@ ${formattedTranscript}
   }
 }
 
-// Get feedback for specific user & interview
-export async function getFeedbackByInterviewId(params: {
-  interviewId: string;
-  userId: string;
-}): Promise<Feedback | null> {
-  const { interviewId, userId } = params;
 
-  const feedbackSnapshot = await db
-    .collection("feedback")
-    .where("interviewId", "==", interviewId)
-    .where("userId", "==", userId)
-    .limit(1)
-    .get();
-
-  if (feedbackSnapshot.empty) return null;
-
-  const feedbackDoc = feedbackSnapshot.docs[0];
-
-  return {
-    id: feedbackDoc.id,
-    ...feedbackDoc.data(),
-  } as Feedback;
-}
 
 
 export async function getFeebbackByUserId(params:GetFeedbackByInterviewIdParams): Promise<Feedback | null>{
@@ -93,7 +71,6 @@ export async function getFeebbackByUserId(params:GetFeedbackByInterviewIdParams)
     const {userId} = params;
     const feedback = await db
     .collection('feedback')
- 
     .where('userId', '==', userId)
     .limit(1)
     .get()
@@ -105,6 +82,7 @@ const feedbackDoc = feedback.docs[0];
 
 
     return {
+      
         id:feedbackDoc.id,
         ...feedbackDoc.data()
     } as Feedback;
