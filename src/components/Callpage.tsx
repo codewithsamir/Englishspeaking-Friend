@@ -183,19 +183,20 @@ console.log("hello")
    {/* Transcript */}
 {messages.length > 0 && (
   <div className="w-full max-w-md p-4 bg-gray-800 rounded-xl border border-gray-700 mt-6 overflow-y-auto h-40">
-    {messages.map((msg, index) => (
+  
       <p
-        key={index}
+        key={lastestmessage}
         className={cn(
           "text-white p-2 rounded-lg mb-2 transition-all duration-500",
-          msg.role === "user" ? "bg-blue-600 self-end text-right" : "bg-purple-600 self-start text-left"
+          "bg-blue-600 self-end text-right"
         )}
       >
-        {msg.content}
+        {lastestmessage}
       </p>
-    ))}
+   
   </div>
 )}
+
 
 
       {/* Call Button */}
