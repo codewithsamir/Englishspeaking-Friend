@@ -4,9 +4,10 @@ import CallPage from "@/components/Callpage";
 const page = async ({ params }: any) => {
   const { userid } =await params;
   const user = await getCurrentsUser()
-  const {name,id}:any =  user;
+  const {name}:any =  user;
 
-  return <CallPage userId={id} userName={name} type="generate" />;
+
+  return <CallPage userId={userid} userName={name} type="generate" />;
 };
 
 export default page;

@@ -16,6 +16,7 @@ enum CallStatus {
 
 export default function CallPage({ type, userId, userName }: CallPageProps) {
   const router = useRouter();
+  
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -86,7 +87,7 @@ export default function CallPage({ type, userId, userName }: CallPageProps) {
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
-console.log("hello")
+// console.log("hello")
     if (type === "generate") {
      const data = await vapi.start(
         undefined,
@@ -100,7 +101,7 @@ console.log("hello")
           },
         }
       );
-      console.log(data)
+      // console.log(data)
     } else {
       // Other call types logic here if needed
     }
