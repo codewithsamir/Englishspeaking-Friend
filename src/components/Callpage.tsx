@@ -182,13 +182,12 @@ console.log("hello")
 
    {/* Transcript */}
 {messages.length > 0 && (
-  <div className="w-full max-w-md p-4 bg-gray-800 rounded-xl border border-gray-700 mt-6 overflow-y-auto h-40">
+  <div className="text-white w-full max-w-md p-4 bg-gray-800 rounded-xl border border-gray-700 mt-6 overflow-y-auto h-40">
   
       <p
         key={lastestmessage}
         className={cn(
-          "text-white p-2 rounded-lg mb-2 transition-all duration-500",
-          "bg-blue-600 self-end text-right"
+         "transition-opacity duration-500 opacity-0", 'animate-fadeIn opacity-100 textwhite'
         )}
       >
         {lastestmessage}
