@@ -132,7 +132,7 @@ interface Feedback {
 }
 interface GetFeedbackByInterviewIdParams {
   
-  userId: string;
+  userId: string | undefined;
 }
 
 

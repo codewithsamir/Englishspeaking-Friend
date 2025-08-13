@@ -1,24 +1,28 @@
-import { getCurrentsUser } from '@/action/auth.action'
-import { getFeebbackByUserId } from '@/action/general.action'
-import Dashboard from '@/components/Dashboard'
+import { getCurrentsUser } from '@/action/auth.action';
+import { getFeebbackByUserId } from '@/action/general.action';
+import Dashboard from '@/components/Dashboard';
+import React from 'react';
 
-import React from 'react'
+const Page = async () => {
+  // Fetch current user
+  const user = await getCurrentsUser();
+  
+  // Extract userId safely
+  const userId = user?.id ;
 
-const page = async() => {
-  const user = await getCurrentsUser()
-  // console.log(user)
-  const userId = user?.id ?? ""
-  const feedback = await getFeebbackByUserId({userId})
-  // console.log(feedback)
-  const isFeedbackAvailable = feedback && Object.keys(feedback).length > 0;
-  // console.log(isFeedbackAvailable)
+  // Fetch feedback for this user
+  const feedback = await getFeebbackByUserId({ userId });
+
+  // Check if feedback exists and is non-empty
+  const isFeedbackAvailable = !!(feedback && Object.keys(feedback).length > 0);
 
   return (
-    <>
-    <Dashboard user={user } trialmode ={isFeedbackAvailable ?? false} feedback={feedback} />
+    <Dashboard
+      user={user as User}
+      trialmode={isFeedbackAvailable}
+      feedback={feedback as Feedback}
+    />
+  );
+};
 
-    </>
-    )
-}
-
-export default page
+export default Page;
